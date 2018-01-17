@@ -1,3 +1,13 @@
+package library.management.system;
+
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import library.management.system.JavaConnect;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -10,11 +20,57 @@
  */
 public class Return extends javax.swing.JFrame {
 
+    Connection conn ;
+    ResultSet rs ;
+    PreparedStatement pst;
     /**
      * Creates new form Return
      */
     public Return() {
+        super("Return Book");
         initComponents();
+        conn = JavaConnect.connectDB();
+    }
+    
+    public void delete(){
+        String sql = "delete from Issue where Student_Id=?";
+        try{
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, jTextField1.getText());
+            pst.execute();
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    
+    public void returnUpdate(){
+        String sql = "insert into Return(Student_ID,Name,FName,Course,Branch,Year,Semester,Book_ID,BName,Edition,Publisher,Price,Pages,DOI,DOR) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        try{
+            pst=conn.prepareStatement(sql);
+            
+            pst.setString(1,jTextField1.getText());
+            pst.setString(2,jTextField2.getText());
+            pst.setString(3,jTextField3.getText());
+            pst.setString(4,jTextField4.getText());
+            pst.setString(5,jTextField5.getText());
+            pst.setString(6,jTextField6.getText());
+            pst.setString(7,jTextField7.getText());
+            pst.setString(8,jTextField8.getText());
+            pst.setString(9,jTextField9.getText());
+            pst.setString(10,jTextField10.getText());
+            pst.setString(11,jTextField11.getText());
+            pst.setString(12,jTextField12.getText());
+            pst.setString(13,jTextField13.getText());
+            pst.setString(14,jTextField14.getText());
+            pst.setString(15,((JTextField)jDateChooser1.getDateEditor().getUiComponent()).getText());
+            pst.execute();
+            JOptionPane.showMessageDialog(null, "Book Returned");
+        
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+ 
+        
     }
 
     /**
@@ -55,8 +111,11 @@ public class Return extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jLabel15 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -104,6 +163,13 @@ public class Return extends javax.swing.JFrame {
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel11.setText("Publisher");
 
+        jButton3.setText("Search");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -139,7 +205,9 @@ public class Return extends javax.swing.JFrame {
                         .addComponent(jLabel5)
                         .addGap(105, 105, 105)
                         .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(149, 149, 149)
+                .addGap(18, 18, 18)
+                .addComponent(jButton3)
+                .addGap(59, 59, 59)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -185,7 +253,8 @@ public class Return extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -225,7 +294,22 @@ public class Return extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        jLabel15.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel15.setText("Return Date");
+
+        jButton1.setText("Return");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Back");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -233,14 +317,23 @@ public class Return extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(59, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel15)
-                .addGap(65, 65, 65)
-                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(84, 84, 84))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(66, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel15)
+                                .addGap(65, 65, 65)
+                                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(84, 84, 84))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addGap(48, 48, 48)
+                                .addComponent(jButton2)
+                                .addGap(92, 92, 92))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -251,12 +344,86 @@ public class Return extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15))
-                .addContainerGap(59, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addContainerGap())
         );
 
         setSize(new java.awt.Dimension(748, 471));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        String sql = "select * from Issue where Student_Id=?";
+        try{
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, jTextField1.getText());
+            rs= pst.executeQuery();
+            if (rs.next()) {
+                String add1=rs.getString("SName");
+                jTextField2.setText(add1);
+               String add2=rs.getString("FName");
+                jTextField3.setText(add2);
+                 String add3=rs.getString("Course");
+                jTextField4.setText(add3);
+                 String add4=rs.getString("Branch");
+                jTextField5.setText(add4);
+                 String add5=rs.getString("Year");
+                jTextField6.setText(add5);
+                 String add6=rs.getString("Semester");
+                jTextField7.setText(add6);
+                 String add7=rs.getString("Book_ID");
+                jTextField8.setText(add7);
+                 String add8=rs.getString("Name");
+                jTextField9.setText(add8);
+                 String add9=rs.getString("Edition");
+                jTextField10.setText(add9);
+                 String add10=rs.getString("Publisher");
+                jTextField11.setText(add10);
+                 String add11=rs.getString("Price");
+                jTextField12.setText(add11);
+                 String add12=rs.getString("Pages");
+                jTextField13.setText(add12); 
+                 String add13=rs.getString("DateOfIssue");
+                jTextField14.setText(add13);  
+                
+                
+                
+                
+                
+                
+                rs.close();
+                pst.close();
+            }else {
+                JOptionPane.showMessageDialog(null, "Book is not Issued With this Student ID");
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }finally{
+            try{
+                rs.close();
+                pst.close();
+            }catch(Exception e){
+                
+            }
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        setVisible(false);
+        Home ob = new Home();
+        ob.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        delete();
+        returnUpdate();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -294,6 +461,9 @@ public class Return extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
